@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35514.174 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MealMap", "MealMap\MealMap.csproj", "{34B15D5E-E874-427D-A4D0-B567DDA6245A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MealMap.Application", "MealMap.Application\MealMap.Application.csproj", "{EC9FFBDB-0C2C-404B-AEB3-97695ACB029D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MealMap.Domain", "MealMap.Domain\MealMap.Domain.csproj", "{54AFCE29-FCBC-43ED-A264-0E0F80EEDD00}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{34B15D5E-E874-427D-A4D0-B567DDA6245A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34B15D5E-E874-427D-A4D0-B567DDA6245A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34B15D5E-E874-427D-A4D0-B567DDA6245A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34B15D5E-E874-427D-A4D0-B567DDA6245A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC9FFBDB-0C2C-404B-AEB3-97695ACB029D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC9FFBDB-0C2C-404B-AEB3-97695ACB029D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC9FFBDB-0C2C-404B-AEB3-97695ACB029D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC9FFBDB-0C2C-404B-AEB3-97695ACB029D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54AFCE29-FCBC-43ED-A264-0E0F80EEDD00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54AFCE29-FCBC-43ED-A264-0E0F80EEDD00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54AFCE29-FCBC-43ED-A264-0E0F80EEDD00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54AFCE29-FCBC-43ED-A264-0E0F80EEDD00}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
