@@ -22,6 +22,6 @@ public class Ingredient : IIngredient
 
     public void EditQuantity(double quantity)
     {
-        Quantity = (int)quantity;
+        Quantity = (double)quantity;
     }
 }
