@@ -3,6 +3,7 @@ using MealMap.Application.ShoppingListExporter;
 using MealMap.Domain.Models;
 using MealMap.Application.Composite;
 using MealMap.Application.Decorator;
+using MealMap.Application.Builder;
 //do emoji
 System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 Console.OutputEncoding = System.Text.Encoding.UTF8;
@@ -113,6 +114,7 @@ new Recipe
 }
 };
 
+
 recipes[0].AddIngredient(new Ingredient { Name = "Oliwki", Quantity = 50, Unit = "g" });
 recipes[0].EditIngredient(new Ingredient { Name = "Grzanki", Quantity = 120, Unit = "g" });
 recipes[0].RemoveIngredient(new Ingredient { Name = "Sos Cezar" });
@@ -143,3 +145,53 @@ foreach (var recipe in recipes)
     Console.WriteLine($"  Tłuszcz: {recipe.Fat}g");
     Console.WriteLine(new string('-', 40));
 }
+
+// Przykładowe przepisy
+var recipe1 = new Recipe
+{
+    Name = "Spaghetti Bolognese",
+    Description = "Klasyczne włoskie spaghetti z sosem bolognese",
+    Category = "Obiad",
+    Ingredients = new List<Ingredient>
+                {
+                    new Ingredient { Name = "Makaron", Quantity = 100, Unit = "g" },
+                    new Ingredient { Name = "Sos pomidorowy", Quantity = 150, Unit = "ml" },
+                    new Ingredient { Name = "Mięso mielone", Quantity = 200, Unit = "g" }
+                },
+    Instructions = "Ugotuj makaron. Przygotuj sos z mięsem mielonym i pomidorami.",
+    Calories = 650,
+    Protein = 35,
+    Carbs = 85,
+    Fat = 18
+};
+
+var recipe2 = new Recipe
+{
+    Name = "Sałatka z kurczakiem",
+    Description = "Lekka sałatka z kawałkami kurczaka",
+    Category = "Kolacja",
+    Ingredients = new List<Ingredient>
+                {
+                    new Ingredient { Name = "Sałata", Quantity = 150, Unit = "g" },
+                    new Ingredient { Name = "Kurczak grillowany", Quantity = 100, Unit = "g" },
+                    new Ingredient { Name = "Sos vinaigrette", Quantity = 50, Unit = "ml" }
+                },
+    Instructions = "Połącz wszystkie składniki i polej sosem.",
+    Calories = 350,
+    Protein = 25,
+    Carbs = 10,
+    Fat = 20
+};
+
+// Tworzenie planu posiłków za pomocą buildera
+IMealPlanBuilder builder = new MealPlanBuilder();
+MealPlan mealPlan = builder
+    .SetMealTime("Obiad")
+    .SetDateTime("2025-01-12")
+    .AddMeal(recipe1)
+    .AddMeal(recipe2)
+    .Build();
+
+// Wyświetlenie planu posiłków
+Console.WriteLine(mealPlan);
+   
