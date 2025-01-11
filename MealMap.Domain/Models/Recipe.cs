@@ -12,11 +12,4 @@ public class Recipe
     public double Protein { get; set; }
     public double Carbs { get; set; }
     public double Fat { get; set; }
-
-	public Recipe(string name, string category)
-	{
-		Name = name;
-		Category = category;
-		Ingredients = new List<Ingredient>();
-	}
 }
