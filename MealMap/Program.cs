@@ -1,8 +1,6 @@
 ﻿using MealMap.Application.ShoppingListExporter.Exporters;
 using MealMap.Application.ShoppingListExporter;
 using MealMap.Domain.Models;
-using MealMap.Application.RecipeCreator;
-using MealMap.Application.RecipeCreator.Creators;
 
 var ingredients = new List<Ingredient>
 {
