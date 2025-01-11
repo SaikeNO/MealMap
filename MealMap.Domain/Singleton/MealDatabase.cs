@@ -37,6 +37,7 @@ namespace MealMap.Domain.Singleton
             if (recipe != null)
             {
                 Recipes.Add(recipe);
+                Console.WriteLine($"Przepis {recipe.Name} został dodany do bazy danych.");
             }
         }
 
@@ -45,36 +46,7 @@ namespace MealMap.Domain.Singleton
             if (mealPlan != null)
             {
                 MealPlans.Add(mealPlan);
-            }
-        }
-
-
-
-        // Metody testowe do wyświetlania przepisów i planów
-        public void DisplayRecipes()
-        {
-            foreach (var recipe in Recipes)
-            {
-                Console.WriteLine($"Recipe: {recipe.Name}, Category: {recipe.Category}, Calories: {recipe.Calories}, Instructions: {recipe.Instructions}");
-                foreach (var ingredient in recipe.Ingredients)
-                {
-                    Console.WriteLine($"  Ingredient: {ingredient.Name}, Quantity: {ingredient.Quantity} {ingredient.Unit}");
-                }
-            }
-        }
-        public void DisplayMealPlans()
-        {
-            foreach (var mealPlan in MealPlans)
-            {
-                Console.WriteLine($"Meal Plan: {mealPlan.PlanName}, Start Date: {mealPlan.StartDate}, End Date: {mealPlan.EndDate}");
-                foreach (var meal in mealPlan.Meals)
-                {
-                    Console.WriteLine($"  Meal: {meal.Name}, Date: {meal.Date}, Time of Day: {meal.TimeOfDay}");
-                    foreach (var recipe in meal.Recipes)
-                    {
-                        Console.WriteLine($"    Recipe: {recipe.Name}");
-                    }
-                }
+                Console.WriteLine($"Plan posiłków {mealPlan.MealTime} na dzień {mealPlan.DateTime.ToShortDateString()} został dodany do bazy danych.");
             }
         }
     }
