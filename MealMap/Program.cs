@@ -15,11 +15,3 @@ exporter.Export(ingredients);
 
 exporter.SetStrategy(new JsonExportStrategy());
 exporter.Export(ingredients);
-
-RecipeCreator breakfastFactory = new BreakfastRecipeCreator();
-RecipeCreator lunchFactory = new LunchRecipeCreator();
-RecipeCreator dessertFactory = new DessertRecipeCreator();
-
-Recipe pancakes = breakfastFactory.CreateRecipe("Pancakes");
-Recipe spaghetti = lunchFactory.CreateRecipe("Spaghetti");
-Recipe cake = dessertFactory.CreateRecipe("Chocolate Cake");
