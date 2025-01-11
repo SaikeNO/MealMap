@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using MealMap.Domain.Models;
 
-namespace MealMap.Domain
+namespace MealMap.Domain.Singleton
 {
     public class MealDatabase
     {

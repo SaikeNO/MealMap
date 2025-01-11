@@ -1,7 +1,8 @@
 ﻿using MealMap.Application.ShoppingListExporter.Exporters;
 using MealMap.Application.ShoppingListExporter;
+using MealMap.Application.Composite;
 using MealMap.Domain.Models;
-using MealMap.Domain;
+using MealMap.Domain.Singleton;
 
 
 var database = MealDatabase.Instance();
@@ -20,8 +21,6 @@ var saladRecipe = new Recipe
     Calories = 350
 };
 database.AddRecipe(saladRecipe);
-using MealMap.Application.Composite;
-
 var toastRecipe = new Recipe
 {
     Name = "Tost z masłem",
@@ -141,5 +140,8 @@ Console.WriteLine("\nPo modyfikacji ilości wody:");
 puffPastry.Display();
 exporter.Export(ingredients);
 
+Console.WriteLine("\n");
+
 database.DisplayRecipes();
+Console.WriteLine("\n");
 database.DisplayMealPlans();
