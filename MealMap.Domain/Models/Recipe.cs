@@ -16,7 +16,16 @@ public class Recipe: IRecipe
     public double Carbs { get; set; }
     public double Fat { get; set; }
 
-    public void AddIngredient(Ingredient ingredient)
+    public Recipe() { }
+
+	public Recipe(string name, string category)
+	{
+		Name = name;
+		Category = category;
+		Ingredients = new List<Ingredient>();
+	}
+
+	public void AddIngredient(Ingredient ingredient)
     {
         if (!Ingredients.Contains(ingredient))
         {

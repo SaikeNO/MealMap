@@ -1,4 +1,5 @@
-﻿using MealMap.Domain.Models;
+﻿using MealMap.Application.Decorator;
+using MealMap.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace MealMap.Application.RecipeCreator
 {
 	public abstract class RecipeCreator
 	{
-		public abstract Recipe CreateRecipe(string name);
+		public abstract IRecipe CreateRecipe(string name);
 	}
 }

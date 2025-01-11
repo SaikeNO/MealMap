@@ -1,4 +1,5 @@
-﻿using MealMap.Domain.Models;
+﻿using MealMap.Application.Decorator;
+using MealMap.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,9 @@ namespace MealMap.Application.RecipeCreator.Creators
 {
 	public class DessertRecipeCreator : RecipeCreator
 	{
-		public override Recipe CreateRecipe(string name)
+		public override IRecipe CreateRecipe(string name)
 		{
-			return new Recipe(name, "Dessert");
+			return new Recipe(name, "Deser");
 		}
 	}
 }
