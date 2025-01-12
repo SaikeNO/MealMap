@@ -1,14 +1,95 @@
 ﻿using MealMap.Application.ShoppingListExporter.Exporters;
 using MealMap.Application.ShoppingListExporter;
+using MealMap.Application.Composite;
 using MealMap.Domain.Models;
 using MealMap.Application.Composite;
 using MealMap.Application.Decorator;
 using MealMap.Application.Builder;
+using MealMap.Domain.Singleton;
 using MealMap.Application.RecipeCreator.Creators;
 using MealMap.Application.RecipeCreator;
 //do emoji
 System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 Console.OutputEncoding = System.Text.Encoding.UTF8;
+
+// Singleton
+// Pobranie instancji bazy danych
+var database = MealDatabase.Instance();
+
+// Dodanie przepisu na sałatkę Cezar
+var saladRecipe = new Recipe
+{
+    Name = "Sałatka Cezar",
+    Description = "Klasyczna sałatka z chrupiącą sałatą, parmezanem i grzankami.",
+    Category = "Obiad",
+    Ingredients = new List<Ingredient>
+            {
+                new() { Name = "Sałata", Quantity = 1, Unit = "główka", Category = "Warzywa" },
+                new() { Name = "Grzanki", Quantity = 100, Unit = "g", Category = "Pieczywo" },
+                new() { Name = "Parmezan", Quantity = 50, Unit = "g", Category = "Sery" }
+            },
+    Instructions = "Pokrój sałatę, wymieszaj z grzankami i parmezanem. Dodaj sos.",
+    Calories = 350,
+    Protein = 10,
+    Carbs = 20,
+    Fat = 15
+};
+database.AddRecipe(saladRecipe);
+
+// Dodanie przepisu na spaghetti bolognese
+var spaghettiRecipe = new Recipe
+{
+    Name = "Spaghetti Bolognese",
+    Description = "Klasyczne włoskie spaghetti z sosem bolognese.",
+    Category = "Obiad",
+    Ingredients = new List<Ingredient>
+            {
+                new() { Name = "Makaron spaghetti", Quantity = 200, Unit = "g", Category = "Makarony" },
+                new() { Name = "Mięso mielone", Quantity = 300, Unit = "g", Category = "Mięso" },
+                new() { Name = "Sos pomidorowy", Quantity = 250, Unit = "ml", Category = "Przetwory" }
+            },
+    Instructions = "Ugotuj makaron. Przygotuj sos z mięsa mielonego i pomidorów.",
+    Calories = 650,
+    Protein = 35,
+    Carbs = 75,
+    Fat = 20
+};
+database.AddRecipe(spaghettiRecipe);
+
+// Tworzenie planu posiłków
+var mealPlanSingleton = new MealPlan
+{
+    MealTime = "Obiad",
+    DateTime = DateTime.Now
+};
+mealPlanSingleton.AddMeal(saladRecipe);
+mealPlanSingleton.AddMeal(spaghettiRecipe);
+database.AddMealPlan(mealPlanSingleton);
+
+// Wyświetlenie przepisów i składników z użyciem kompozytu
+Console.WriteLine("\nLista przepisów ze składnikami:");
+foreach (var recipe in database.Recipes)
+{
+    var composite = new IngredientComposite { Name = recipe.Name, Quantity = 1 };
+    foreach (var ingredient in recipe.Ingredients)
+    {
+        composite.Add(new IngredientComposite
+        {
+            Name = ingredient.Name,
+            Quantity = ingredient.Quantity
+        });
+    }
+
+    Console.WriteLine($"Przepis: {recipe.Name}");
+    Console.WriteLine($"Opis: {recipe.Description}");
+    composite.Display();
+    Console.WriteLine(new string('-', 40));
+}
+
+// Wyświetlenie planu posiłków
+Console.WriteLine(mealPlanSingleton);
+Console.WriteLine("\n");
+
 
 var ingredients = new List<Ingredient>
 {
