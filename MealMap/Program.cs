@@ -6,6 +6,8 @@ using MealMap.Application.Composite;
 using MealMap.Application.Decorator;
 using MealMap.Application.Builder;
 using MealMap.Domain.Singleton;
+using MealMap.Application.RecipeCreator.Creators;
+using MealMap.Application.RecipeCreator;
 //do emoji
 System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 Console.OutputEncoding = System.Text.Encoding.UTF8;
@@ -276,4 +278,43 @@ MealPlan mealPlan = builder
 // Wyświetlenie planu posiłków
 Console.WriteLine(mealPlan);
 
-Console.WriteLine("\n");
+
+// Factory Method
+
+// Tworzenie fabryk
+Console.WriteLine("Dodawanie przepisów poprzez fabryki");
+RecipeCreator breakfastFactory = new BreakfastRecipeCreator();
+RecipeCreator lunchFactory = new LunchRecipeCreator();
+RecipeCreator dessertFactory = new DessertRecipeCreator();
+
+// Tworzenie przepisów
+IRecipe pancakes = breakfastFactory.CreateRecipe("Naleśniki");
+IRecipe spaghetti = lunchFactory.CreateRecipe("Spaghetti");
+IRecipe cake = dessertFactory.CreateRecipe("Ciasto czekoladowe");
+
+// Dodawanie składników
+pancakes.AddIngredient(new Ingredient { Name = "Mąka", Quantity = 500, Unit = "g" });
+pancakes.AddIngredient(new Ingredient { Name = "Mleko", Quantity = 150, Unit = "ml" });
+
+spaghetti.AddIngredient(new Ingredient { Name = "Makaron", Quantity = 550, Unit = "g" });
+spaghetti.AddIngredient(new Ingredient { Name = "Sos pomidorowy", Quantity = 350, Unit = "ml" });
+
+cake.AddIngredient(new Ingredient { Name = "Mąka", Quantity = 400, Unit = "g" });
+cake.AddIngredient(new Ingredient { Name = "Cukier", Quantity = 150, Unit = "g" });
+
+var recipes2 = new List<IRecipe>();
+recipes2.Add(pancakes);
+recipes2.Add(spaghetti);
+recipes2.Add(cake);
+
+foreach (var recipe in recipes2)
+{
+	Console.WriteLine(recipe.Name);
+	Console.WriteLine($"  Kategoria: {recipe.Category}");
+	Console.WriteLine("  Składniki:");
+	foreach (var ingredient in recipe.GetIngredients())
+	{
+		Console.WriteLine($"    - {ingredient.Name}: {ingredient.Quantity} {ingredient.Unit}");
+	}
+	Console.WriteLine(new string('-', 40));
+}
