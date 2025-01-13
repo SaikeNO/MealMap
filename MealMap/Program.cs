@@ -90,28 +90,28 @@ static void AddRecipe(MealDatabase database)
     recipe.Description = Console.ReadLine();
 
     Console.Write("Kalorie: ");
-    recipe.Calories = int.Parse(Console.ReadLine() ?? "0");
+	recipe.Calories = int.TryParse(Console.ReadLine(), out int calories) ? calories : 0;
 
-    Console.Write("Białko (g): ");
-    recipe.Protein = double.Parse(Console.ReadLine() ?? "0");
+	Console.Write("Białko (g): ");
+	recipe.Protein = double.TryParse(Console.ReadLine(), out double protein) ? protein : 0.0;
 
-    Console.Write("Węglowodany (g): ");
-    recipe.Carbs = double.Parse(Console.ReadLine() ?? "0");
+	Console.Write("Węglowodany (g): ");
+	recipe.Carbs = double.TryParse(Console.ReadLine(), out double carbs) ? carbs : 0.0;
 
-    Console.Write("Tłuszcz (g): ");
-    recipe.Fat = double.Parse(Console.ReadLine() ?? "0");
+	Console.Write("Tłuszcz (g): ");
+	recipe.Fat = double.TryParse(Console.ReadLine(), out double fat) ? fat : 0.0;
 
-    Console.WriteLine("Dodawanie składników (wpisz 'koniec', aby zakończyć):");
-    while (true)
-    {
-        Console.Write("Nazwa składnika: ");
-        var ingredientName = Console.ReadLine();
-        if (ingredientName?.ToLower() == "koniec") break;
+	Console.WriteLine("Dodawanie składników (wpisz 'koniec', aby zakończyć):");
+	while (true)
+	{
+		Console.Write("Nazwa składnika: ");
+		var ingredientName = Console.ReadLine();
+		if (ingredientName?.ToLower() == "koniec") break;
 
-        Console.Write("Ilość: ");
-        var quantity = double.Parse(Console.ReadLine() ?? "0");
+		Console.Write("Ilość: ");
+		var quantity = double.TryParse(Console.ReadLine(), out double result) ? result : 0.0;
 
-        Console.Write("Jednostka: ");
+		Console.Write("Jednostka: ");
         var unit = Console.ReadLine();
 
         recipe.AddIngredient(new Ingredient
