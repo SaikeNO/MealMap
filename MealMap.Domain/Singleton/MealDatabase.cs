@@ -37,7 +37,7 @@ namespace MealMap.Domain.Singleton
             if (recipe != null)
             {
                 Recipes.Add(recipe);
-                Console.WriteLine($"Przepis {recipe.Name} został dodany do bazy danych.");
+                Console.WriteLine($"Przepis {recipe.Name} został dodany.");
             }
         }
 
@@ -46,7 +46,7 @@ namespace MealMap.Domain.Singleton
             if (mealPlan != null)
             {
                 MealPlans.Add(mealPlan);
-                Console.WriteLine($"Plan posiłków {mealPlan.MealTime} na dzień {mealPlan.DateTime.ToShortDateString()} został dodany do bazy danych.");
+                Console.WriteLine($"Plan posiłków {mealPlan.MealTime} na dzień {mealPlan.DateTime.ToShortDateString()} został dodany.");
             }
         }
     }

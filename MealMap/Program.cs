@@ -25,7 +25,8 @@ while (true)
     Console.WriteLine("2. Wyświetl wszystkie przepisy");
     Console.WriteLine("3. Utwórz plan posiłków");
     Console.WriteLine("4. Eksportuj listę zakupów");
-    Console.WriteLine("5. Wyjście");
+    Console.WriteLine("5. Wyświetl listę planów posiłków");
+    Console.WriteLine("6. Wyjście");
     Console.Write("Wybierz opcję: ");
     var choice = Console.ReadLine();
 
@@ -45,10 +46,10 @@ while (true)
             break;
         case "5":
             DisplayMealPlans(database.MealPlans);
-            return;
+            break;
         case "6":
             Console.WriteLine("Zamykanie aplikacji...");
-            break;
+            return;
         default:
             Console.WriteLine("Nieprawidłowy wybór. Spróbuj ponownie.");
             break;
@@ -157,7 +158,6 @@ static void AddRecipe(MealDatabase database)
 
 Done:
     database.AddRecipe(recipe);
-    Console.WriteLine("Przepis został dodany!");
 }
 
 
@@ -216,7 +216,6 @@ static void CreateMealPlan(MealDatabase database)
     }
 
     database.AddMealPlan(mealPlan);
-    Console.WriteLine("Plan posiłków został zapisany.");
 }
 
 static void ExportShoppingList(MealDatabase database)
