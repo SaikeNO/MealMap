@@ -1,15 +1,9 @@
-﻿using MealMap.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MealMap.Domain.Interface;
 
-namespace MealMap.Application.Decorator
+namespace MealMap.Application.Decorator;
+
+public class SpicyRecipe : BaseRecipeDecorator
 {
-    public class SpicyRecipe : BaseRecipeDecorator
-    {
-        public SpicyRecipe(IRecipe recipe) : base(recipe) { }
-        public override string Emoji => $"{base.Emoji}🌶 ";
-    }
+    public SpicyRecipe(IRecipe recipe) : base(recipe) { }
+    public override string Emoji => $"{base.Emoji}🌶 ";
 }

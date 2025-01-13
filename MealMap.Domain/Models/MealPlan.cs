@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using MealMap.Domain.Interface;
 
 namespace MealMap.Domain.Models;
 
@@ -7,9 +8,9 @@ public class MealPlan
     public Guid Id { get; set; } = Guid.NewGuid();
     public string MealTime { get; set; }
     public DateTime DateTime { get; set; }
-    public List<Recipe> Meals { get; private set; } = new List<Recipe>();
+    public List<IRecipe> Meals { get; private set; } = new List<IRecipe>();
 
-    public void AddMeal(Recipe recipe)
+    public void AddMeal(IRecipe recipe)
     {
         Meals.Add(recipe);
     }

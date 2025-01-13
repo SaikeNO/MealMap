@@ -1,10 +1,4 @@
-﻿using MealMap.Application.Decorator;
-using MealMap.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MealMap.Domain.Models;
 
 namespace MealMap.Application.Builder
 {

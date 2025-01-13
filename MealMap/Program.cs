@@ -1,33 +1,32 @@
-﻿using MealMap.Application.ShoppingListExporter.Exporters;
-using MealMap.Application.ShoppingListExporter;
-using MealMap.Application.Composite;
-using MealMap.Domain.Models;
+﻿using MealMap.Application.Builder;
 using MealMap.Application.Composite;
 using MealMap.Application.Decorator;
-using MealMap.Application.Builder;
-using MealMap.Domain.Singleton;
 using MealMap.Application.RecipeCreator.Creators;
-using MealMap.Application.RecipeCreator;
-//do emoji
+using MealMap.Application.ShoppingListExporter;
+using MealMap.Application.ShoppingListExporter.Exporters;
+using MealMap.Domain.Interface;
+using MealMap.Domain.Models;
+using MealMap.Domain.Singleton;
+
+// Ustawienie kodowania dla obsługi emoji
 System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 Console.OutputEncoding = System.Text.Encoding.UTF8;
 
-// Singleton
-// Pobranie instancji bazy danych
+// Singleton: Utworzenie bazy danych
 var database = MealDatabase.Instance();
 
-// Dodanie przepisu na sałatkę Cezar
+// Dodanie przepisów do bazy danych
 var saladRecipe = new Recipe
 {
     Name = "Sałatka Cezar",
     Description = "Klasyczna sałatka z chrupiącą sałatą, parmezanem i grzankami.",
     Category = "Obiad",
-    Ingredients = new List<Ingredient>
-            {
-                new() { Name = "Sałata", Quantity = 1, Unit = "główka", Category = "Warzywa" },
-                new() { Name = "Grzanki", Quantity = 100, Unit = "g", Category = "Pieczywo" },
-                new() { Name = "Parmezan", Quantity = 50, Unit = "g", Category = "Sery" }
-            },
+    Ingredients =
+    [
+        new Ingredient { Name = "Sałata", Quantity = 1, Unit = "główka", Category = "Warzywa" },
+        new Ingredient { Name = "Grzanki", Quantity = 100, Unit = "g", Category = "Pieczywo" },
+        new Ingredient { Name = "Parmezan", Quantity = 50, Unit = "g", Category = "Sery" }
+    ],
     Instructions = "Pokrój sałatę, wymieszaj z grzankami i parmezanem. Dodaj sos.",
     Calories = 350,
     Protein = 10,
@@ -36,18 +35,17 @@ var saladRecipe = new Recipe
 };
 database.AddRecipe(saladRecipe);
 
-// Dodanie przepisu na spaghetti bolognese
 var spaghettiRecipe = new Recipe
 {
     Name = "Spaghetti Bolognese",
     Description = "Klasyczne włoskie spaghetti z sosem bolognese.",
     Category = "Obiad",
-    Ingredients = new List<Ingredient>
-            {
-                new() { Name = "Makaron spaghetti", Quantity = 200, Unit = "g", Category = "Makarony" },
-                new() { Name = "Mięso mielone", Quantity = 300, Unit = "g", Category = "Mięso" },
-                new() { Name = "Sos pomidorowy", Quantity = 250, Unit = "ml", Category = "Przetwory" }
-            },
+    Ingredients =
+    [
+        new Ingredient() { Name = "Makaron spaghetti", Quantity = 200, Unit = "g", Category = "Makarony" },
+        new Ingredient() { Name = "Mięso mielone", Quantity = 300, Unit = "g", Category = "Mięso" },
+        new Ingredient() { Name = "Sos pomidorowy", Quantity = 250, Unit = "ml", Category = "Przetwory" }
+    ],
     Instructions = "Ugotuj makaron. Przygotuj sos z mięsa mielonego i pomidorów.",
     Calories = 650,
     Protein = 35,
@@ -56,17 +54,19 @@ var spaghettiRecipe = new Recipe
 };
 database.AddRecipe(spaghettiRecipe);
 
-// Tworzenie planu posiłków
-var mealPlanSingleton = new MealPlan
-{
-    MealTime = "Obiad",
-    DateTime = DateTime.Now
-};
-mealPlanSingleton.AddMeal(saladRecipe);
-mealPlanSingleton.AddMeal(spaghettiRecipe);
-database.AddMealPlan(mealPlanSingleton);
+// Tworzenie planu posiłków za pomocą wzorca Builder
+IMealPlanBuilder builder = new MealPlanBuilder();
+var mealPlan = builder
+    .SetMealTime("Obiad")
+    .SetDateTime("2025-01-12")
+    .AddMeal(saladRecipe)
+    .AddMeal(spaghettiRecipe)
+    .Build();
 
-// Wyświetlenie przepisów i składników z użyciem kompozytu
+Console.WriteLine("\nPlan posiłków:");
+Console.WriteLine(mealPlan);
+
+// Wyświetlenie przepisów z użyciem Composite
 Console.WriteLine("\nLista przepisów ze składnikami:");
 foreach (var recipe in database.Recipes)
 {
@@ -86,51 +86,36 @@ foreach (var recipe in database.Recipes)
     Console.WriteLine(new string('-', 40));
 }
 
-// Wyświetlenie planu posiłków
-Console.WriteLine(mealPlanSingleton);
-Console.WriteLine("\n");
-
-
-var ingredients = new List<Ingredient>
-{
-    new() { Name = "Pomidor", Quantity = 2, Unit = "szt." },
-    new() { Name = "Sałata", Quantity = 1, Unit = "szt." }
-};
-
+// Eksport listy składników za pomocą Strategy
 var exporter = new ShoppingListExporter(new TextExportStrategy());
-exporter.Export(ingredients);
+exporter.Export(database.Recipes[0].Ingredients);
 
 exporter.SetStrategy(new JsonExportStrategy());
-exporter.Export(ingredients);
+exporter.Export(database.Recipes[1].Ingredients);
 
-Console.WriteLine("\n");
-
-//Composite
-Ingredient flour = new Ingredient
+// Composite: Składniki na ciasto francuskie
+var flour = new Ingredient
 {
     Name = "Mąka",
     Category = "Sypkie produkty",
     Quantity = 500,
     Unit = "gramy"
 };
-
-Ingredient butter = new Ingredient
+var butter = new Ingredient
 {
     Name = "Masło",
     Category = "Nabiał",
     Quantity = 250,
     Unit = "gramy"
 };
-
-Ingredient water = new Ingredient
+var water = new Ingredient
 {
     Name = "Woda",
     Category = "Płyny",
     Quantity = 200,
     Unit = "mililitry"
 };
-
-Ingredient salt = new Ingredient
+var salt = new Ingredient
 {
     Name = "Sól",
     Category = "Przyprawy",
@@ -138,39 +123,37 @@ Ingredient salt = new Ingredient
     Unit = "gramy"
 };
 
-IngredientComposite puffPastry = new IngredientComposite
+var puffPastry = new IngredientComposite
 {
     Name = "Składniki na ciasto francuskie",
     Quantity = 1
 };
-
 puffPastry.Add(flour);
 puffPastry.Add(butter);
 puffPastry.Add(water);
 puffPastry.Add(salt);
 
-Console.WriteLine("Składniki na ciasto francuskie:");
+Console.WriteLine("\nSkładniki na ciasto francuskie:");
 puffPastry.Display();
 
-water.EditQuantity(250);
+// Modyfikacja ilości wody
+water.Quantity = 250;
 Console.WriteLine("\nPo modyfikacji ilości wody:");
 puffPastry.Display();
 
-Console.WriteLine("\n\n");
-
-var recipes = new List<IRecipe> { 
+var recipes = new List<IRecipe> {
  new Recipe
 {
     Name = "Sałatka Cezar",
     Description = "Klasyczna sałatka Cezar z chrupiącą sałatą, parmezanem i grzankami.",
     Category = "Obiad",
-    Ingredients = new List<Ingredient>
-    {
-        new () { Name = "Sałata", Quantity = 1, Unit = "główka" },
-        new () { Name = "Grzanki", Quantity = 100, Unit = "g" },
-        new () { Name = "Ser Parmezan", Quantity = 50, Unit = "g" },
-        new () { Name = "Sos Cezar", Quantity = 100, Unit = "ml" }
-    },
+    Ingredients =
+    [
+        new Ingredient() { Name = "Sałata", Quantity = 1, Unit = "główka" },
+        new Ingredient() { Name = "Grzanki", Quantity = 100, Unit = "g" },
+        new Ingredient() { Name = "Ser Parmezan", Quantity = 50, Unit = "g" },
+        new Ingredient() { Name = "Sos Cezar", Quantity = 100, Unit = "ml" }
+    ],
     Instructions = "1. Pokrój sałatę. 2. Wymieszaj z grzankami i serem. 3. Dodaj sos i wymieszaj.",
     Calories = 350,
     Protein = 10,
@@ -182,13 +165,13 @@ new Recipe
      Name = "Zupa Pomidorowa",
      Description = "Ciepła i kremowa zupa pomidorowa z bazylią.",
      Category = "Kolacja",
-     Ingredients = new List<Ingredient>
-     {
-        new () { Name = "Pomidory", Quantity = 500, Unit = "g" },
-        new () { Name = "Cebula", Quantity = 1, Unit = "szt." },
-        new () { Name = "Czosnek", Quantity = 2, Unit = "ząbki" },
-        new () { Name = "Śmietanka", Quantity = 100, Unit = "ml" }
-     },
+     Ingredients =
+     [
+        new Ingredient () { Name = "Pomidory", Quantity = 500, Unit = "g" },
+        new Ingredient() { Name = "Cebula", Quantity = 1, Unit = "szt." },
+        new Ingredient() { Name = "Czosnek", Quantity = 2, Unit = "ząbki" },
+        new Ingredient() { Name = "Śmietanka", Quantity = 100, Unit = "ml" }
+     ],
      Instructions = "1. Podsmaż cebulę i czosnek. 2. Dodaj pomidory i gotuj. 3. Zblenduj i dodaj śmietankę.",
      Calories = 250,
      Protein = 5,
@@ -217,7 +200,7 @@ foreach (var recipe in recipes)
     Console.WriteLine($"  Opis: {recipe.Description}");
     Console.WriteLine($"  Kategoria: {recipe.Category}");
     Console.WriteLine("  Składniki:");
-    foreach (var ingredient in recipe.GetIngredients())
+    foreach (var ingredient in recipe.Ingredients)
     {
         Console.WriteLine($"    - {ingredient.Name}: {ingredient.Quantity} {ingredient.Unit}");
     }
@@ -229,70 +212,16 @@ foreach (var recipe in recipes)
     Console.WriteLine(new string('-', 40));
 }
 
-// Przykładowe przepisy
-var recipe1 = new Recipe
-{
-    Name = "Spaghetti Bolognese",
-    Description = "Klasyczne włoskie spaghetti z sosem bolognese",
-    Category = "Obiad",
-    Ingredients = new List<Ingredient>
-                {
-                    new Ingredient { Name = "Makaron", Quantity = 100, Unit = "g" },
-                    new Ingredient { Name = "Sos pomidorowy", Quantity = 150, Unit = "ml" },
-                    new Ingredient { Name = "Mięso mielone", Quantity = 200, Unit = "g" }
-                },
-    Instructions = "Ugotuj makaron. Przygotuj sos z mięsem mielonym i pomidorami.",
-    Calories = 650,
-    Protein = 35,
-    Carbs = 85,
-    Fat = 18
-};
+// Dodawanie przepisów za pomocą Factory Method
+Console.WriteLine("\nDodawanie przepisów za pomocą Factory Method:");
+var breakfastFactory = new BreakfastRecipeCreator();
+var lunchFactory = new LunchRecipeCreator();
+var dessertFactory = new DessertRecipeCreator();
 
-var recipe2 = new Recipe
-{
-    Name = "Sałatka z kurczakiem",
-    Description = "Lekka sałatka z kawałkami kurczaka",
-    Category = "Kolacja",
-    Ingredients = new List<Ingredient>
-                {
-                    new Ingredient { Name = "Sałata", Quantity = 150, Unit = "g" },
-                    new Ingredient { Name = "Kurczak grillowany", Quantity = 100, Unit = "g" },
-                    new Ingredient { Name = "Sos vinaigrette", Quantity = 50, Unit = "ml" }
-                },
-    Instructions = "Połącz wszystkie składniki i polej sosem.",
-    Calories = 350,
-    Protein = 25,
-    Carbs = 10,
-    Fat = 20
-};
+var pancakes = breakfastFactory.CreateRecipe("Naleśniki");
+var spaghetti = lunchFactory.CreateRecipe("Spaghetti");
+var cake = dessertFactory.CreateRecipe("Ciasto czekoladowe");
 
-// Tworzenie planu posiłków za pomocą buildera
-IMealPlanBuilder builder = new MealPlanBuilder();
-MealPlan mealPlan = builder
-    .SetMealTime("Obiad")
-    .SetDateTime("2025-01-12")
-    .AddMeal(recipe1)
-    .AddMeal(recipe2)
-    .Build();
-
-// Wyświetlenie planu posiłków
-Console.WriteLine(mealPlan);
-
-
-// Factory Method
-
-// Tworzenie fabryk
-Console.WriteLine("Dodawanie przepisów poprzez fabryki");
-RecipeCreator breakfastFactory = new BreakfastRecipeCreator();
-RecipeCreator lunchFactory = new LunchRecipeCreator();
-RecipeCreator dessertFactory = new DessertRecipeCreator();
-
-// Tworzenie przepisów
-IRecipe pancakes = breakfastFactory.CreateRecipe("Naleśniki");
-IRecipe spaghetti = lunchFactory.CreateRecipe("Spaghetti");
-IRecipe cake = dessertFactory.CreateRecipe("Ciasto czekoladowe");
-
-// Dodawanie składników
 pancakes.AddIngredient(new Ingredient { Name = "Mąka", Quantity = 500, Unit = "g" });
 pancakes.AddIngredient(new Ingredient { Name = "Mleko", Quantity = 150, Unit = "ml" });
 
@@ -302,19 +231,15 @@ spaghetti.AddIngredient(new Ingredient { Name = "Sos pomidorowy", Quantity = 350
 cake.AddIngredient(new Ingredient { Name = "Mąka", Quantity = 400, Unit = "g" });
 cake.AddIngredient(new Ingredient { Name = "Cukier", Quantity = 150, Unit = "g" });
 
-var recipes2 = new List<IRecipe>();
-recipes2.Add(pancakes);
-recipes2.Add(spaghetti);
-recipes2.Add(cake);
-
+var recipes2 = new List<IRecipe> { pancakes, spaghetti, cake };
 foreach (var recipe in recipes2)
 {
-	Console.WriteLine(recipe.Name);
-	Console.WriteLine($"  Kategoria: {recipe.Category}");
-	Console.WriteLine("  Składniki:");
-	foreach (var ingredient in recipe.GetIngredients())
-	{
-		Console.WriteLine($"    - {ingredient.Name}: {ingredient.Quantity} {ingredient.Unit}");
-	}
-	Console.WriteLine(new string('-', 40));
+    Console.WriteLine($"Przepis: {recipe.Name}");
+    Console.WriteLine($"Kategoria: {recipe.Category}");
+    Console.WriteLine("Składniki:");
+    foreach (var ingredient in recipe.Ingredients)
+    {
+        Console.WriteLine($"- {ingredient.Name}: {ingredient.Quantity} {ingredient.Unit}");
+    }
+    Console.WriteLine(new string('-', 40));
 }

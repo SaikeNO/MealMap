@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using MealMap.Domain.Models;
+﻿using MealMap.Domain.Models;
 
 namespace MealMap.Domain.Singleton
 {

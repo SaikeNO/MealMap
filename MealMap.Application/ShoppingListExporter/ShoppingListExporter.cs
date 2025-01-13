@@ -1,4 +1,4 @@
-﻿using MealMap.Domain.Models;
+﻿using MealMap.Domain.Interface;
 
 namespace MealMap.Application.ShoppingListExporter;
 
@@ -8,5 +8,5 @@ public class ShoppingListExporter(IListExportStrategy strategy)
 
     public void SetStrategy(IListExportStrategy strategy) => _strategy = strategy;
 
-    public void Export(List<Ingredient> ingredients) => _strategy.Export(ingredients);
+    public void Export(List<IIngredient> ingredients) => _strategy.Export(ingredients);
 }

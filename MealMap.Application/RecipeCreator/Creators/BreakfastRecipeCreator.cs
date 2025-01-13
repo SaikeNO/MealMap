@@ -1,18 +1,12 @@
-﻿using MealMap.Application.Decorator;
+﻿using MealMap.Domain.Interface;
 using MealMap.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MealMap.Application.RecipeCreator.Creators
+namespace MealMap.Application.RecipeCreator.Creators;
+
+public class BreakfastRecipeCreator : RecipeCreator
 {
-    public class BreakfastRecipeCreator : RecipeCreator
+    public override IRecipe CreateRecipe(string name)
     {
-		public override IRecipe CreateRecipe(string name)
-		{
-			return new Recipe(name, "Śniadanie");
-		}
-	}
+        return new Recipe(name, "Śniadanie");
+    }
 }
