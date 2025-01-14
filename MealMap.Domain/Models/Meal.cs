@@ -1,4 +1,6 @@
-﻿namespace MealMap.Domain.Models;
+﻿using MealMap.Domain.Interface;
+
+namespace MealMap.Domain.Models;
 
 public class Meal
 {
@@ -6,5 +8,5 @@ public class Meal
     public string Name { get; set; } // np. Śniadanie
     public DateTime Date { get; set; }   
     public string TimeOfDay { get; set; } // np. Poranek, Południe
-    public List<Recipe> Recipes { get; set; }
+    public List<IRecipe> Recipes { get; set; } = [];
 }

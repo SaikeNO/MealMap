@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using MealMap.Domain.Interface;
 using MealMap.Domain.Models;
 
 namespace MealMap.Domain.Singleton
@@ -8,12 +8,12 @@ namespace MealMap.Domain.Singleton
         private static MealDatabase _instance;
         private static readonly object LockObject = new();
 
-        public List<Recipe> Recipes { get; private set; }
+        public List<IRecipe> Recipes { get; private set; }
         public List<MealPlan> MealPlans { get; private set; }
 
         private MealDatabase()
         {
-            Recipes = new List<Recipe>();
+            Recipes = new List<IRecipe>();
             MealPlans = new List<MealPlan>();
         }
 
@@ -32,12 +32,12 @@ namespace MealMap.Domain.Singleton
             return _instance;
         }
 
-        public void AddRecipe(Recipe recipe)
+        public void AddRecipe(IRecipe recipe)
         {
             if (recipe != null)
             {
                 Recipes.Add(recipe);
-                Console.WriteLine($"Przepis {recipe.Name} został dodany do bazy danych.");
+                Console.WriteLine($"Przepis {recipe.Name} został dodany.");
             }
         }
 
@@ -46,7 +46,7 @@ namespace MealMap.Domain.Singleton
             if (mealPlan != null)
             {
                 MealPlans.Add(mealPlan);
-                Console.WriteLine($"Plan posiłków {mealPlan.MealTime} na dzień {mealPlan.DateTime.ToShortDateString()} został dodany do bazy danych.");
+                Console.WriteLine($"Plan posiłków {mealPlan.MealTime} na dzień {mealPlan.DateTime.ToShortDateString()} został dodany.");
             }
         }
     }

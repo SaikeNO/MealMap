@@ -1,10 +1,9 @@
-﻿using MealMap.Application.Decorator;
+﻿using MealMap.Domain.Interface;
 
-namespace MealMap.Domain.Models
+namespace MealMap.Application.Decorator;
+
+public class FavouriteRecipe : BaseRecipeDecorator
 {
-    public class FavouriteRecipe : BaseRecipeDecorator
-    {
-        public FavouriteRecipe(IRecipe recipe) : base(recipe) { }
-        public override string Emoji => $"{base.Emoji}❤️";
-    }
+    public FavouriteRecipe(IRecipe recipe) : base(recipe) { }
+    public override string Emoji => $"{base.Emoji}❤️";
 }
