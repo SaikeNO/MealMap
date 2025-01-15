@@ -5,5 +5,5 @@ namespace MealMap.Application.Decorator;
 public class VeganRecipe : BaseRecipeDecorator
 {
     public VeganRecipe(IRecipe recipe) : base(recipe) { } 
-    public override string Emoji => $"{base.Emoji}🌱";
+    public override string Emoji => $"{base.Emoji}🌱 ";
 }

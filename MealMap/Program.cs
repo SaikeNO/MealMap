@@ -125,28 +125,41 @@ static void AddRecipe(MealDatabase database)
     Console.Write("Instrukcje: ");
     recipe.Instructions = Console.ReadLine();
 
+    var usedDecorators = new List<string>();
     // Dodanie dekoratora
     Console.WriteLine("\nDodaj etykiety (1 - ulubiony, 2 - wegański, 3 - bezglutenowy, 4 - bezlaktozowy, 5 - pikantny, 0 - zakończ):");
     while (true)
     {
         Console.Write("Wybór: ");
         var decoratorChoice = Console.ReadLine();
+
+        if (usedDecorators.Contains(decoratorChoice))
+        {
+            Console.WriteLine("Ten dekorator został już dodany.");
+            continue;
+        }
+
         switch (decoratorChoice)
         {
             case "1":
                 recipe = new FavouriteRecipe(recipe);
+                usedDecorators.Add("1");
                 break;
             case "2":
                 recipe = new VeganRecipe(recipe);
+                usedDecorators.Add("2");
                 break;
             case "3":
                 recipe = new GlutenFreeRecipe(recipe);
+                usedDecorators.Add("3");
                 break;
             case "4":
                 recipe = new LactoseFreeRecipe(recipe);
+                usedDecorators.Add("4");
                 break;
             case "5":
                 recipe = new SpicyRecipe(recipe);
+                usedDecorators.Add("5");
                 break;
             case "0":
                 goto Done;
@@ -156,6 +169,7 @@ static void AddRecipe(MealDatabase database)
         }
     }
 
+
 Done:
     database.AddRecipe(recipe);
 }
@@ -164,6 +178,7 @@ Done:
 static void DisplayRecipes(List<IRecipe> recipes)
 {
     Console.Clear();
+    Console.WriteLine("Rodzaje etykiet: ❤️- ulubiony, 🌱- wegański, 🚫🍞- bezglutenowy, 🚫\U0001f95b- bezlaktozy, 🌶-pikantny\n");
     Console.WriteLine("========== Lista przepisów ==========");
     foreach (var recipe in recipes)
     {
